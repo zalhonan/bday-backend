@@ -37,9 +37,17 @@ def glagne():
     return "Nothing to see here. Move along!"
 
 
-@app.post("/events/", status_code=200)
+@app.post("/events", status_code=200)
 def post_events(events: schemas.Events, db: Session = Depends(get_db)):
     # * запись блока событий с токеном
     db_events = crud.post_events(
         db, events=events)
+    return db_events
+
+
+@app.delete("/events", status_code=200)
+def delete_events(token: str, db: Session = Depends(get_db)):
+    # * удаление всех событий по токену
+    db_events = crud.delete_events(
+        db, token=token)
     return db_events

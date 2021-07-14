@@ -25,3 +25,11 @@ def post_events(db: Session, events: schemas.Events):
         db.commit()
         db.refresh(db_query)
         return "Events updated"
+
+
+def delete_events(db: Session, token: str):
+    # * поиск событий по токену и удаление
+    db_res = db.query(models.Event).filter(
+        models.Event.token == token).delete()
+    db.commit()
+    return f"{db_res} Events deleted"
